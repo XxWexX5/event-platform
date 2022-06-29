@@ -1,6 +1,31 @@
+import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
 
+const GET_LESSONS_QUERY = gql`
+  query {
+    lessons {
+      id
+      slug
+      title
+      teacher {
+        name
+        bio
+        avatarURL
+      }
+    }
+  }
+`;
+
+interface Lesson {
+  id: string;
+  title: string;
+}
+
 export default function Home() {
+  const { data } = useQuery<{ lessons: Lesson[] }>(GET_LESSONS_QUERY);
+
+  console.log(data);
+
   return (
     <>
       <Head>
@@ -9,7 +34,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="text-5xl">Hello World!</h1>
+      <ul>
+        {data?.lessons.map((lesson) => (
+          <li key={lesson.id}>{lesson.title}</li>
+        ))}
+      </ul>
     </>
   );
 }

@@ -11,7 +11,7 @@ body {
 }
 
 body {
-  @apply bg-zinc-900 text-zinc-100;
+  @apply bg-gray-900 text-gray-100;
 }
 
 a {

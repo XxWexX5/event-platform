@@ -3,6 +3,9 @@ module.exports = {
   content: ["./pages/**/*.tsx", "./components/**/*.tsx"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: "Roboto, sans-serif",
+      },
       colors: {
         green: {
           300: "#00B37E",

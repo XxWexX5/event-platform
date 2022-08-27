@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
 
@@ -29,7 +31,8 @@ interface Lesson {
 export default function Event() {
   const { data } = useQuery<{ lessons: Lesson[] }>(GET_LESSONS_QUERY);
 
-  console.log(data);
+  const router = useRouter();
+  const { slug } = router.query;
 
   return (
     <>
@@ -43,7 +46,8 @@ export default function Event() {
         <Header />
 
         <main className="flex flex-1">
-          <Video />
+          {slug ? <Video /> : <div className="flex-1"></div>}
+
           <Sidebar />
         </main>
       </div>

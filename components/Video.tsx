@@ -1,5 +1,7 @@
-import React from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
+
+import { gql, useQuery } from "@apollo/client";
 
 import {
   DiscordLogo,
@@ -8,7 +10,49 @@ import {
   CaretRight,
 } from "phosphor-react";
 
+const GET_LESSON_BY_SLUG_QUERY = gql`
+  query GetLessonBySlug($slug: String) {
+    lesson(where: { slug: $slug }) {
+      title
+      id
+      description
+      videoId
+      teacher {
+        bio
+        avatarURL
+        name
+      }
+    }
+  }
+`;
+
+interface GetLessonBySlugResponse {
+  lesson: {
+    title: string;
+    videoId: string;
+    description: string;
+    teacher: {
+      bio: string;
+      avatarURL: string;
+      name: string;
+    };
+  };
+}
+
 export function Video() {
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const { data } = useQuery<GetLessonBySlugResponse>(GET_LESSON_BY_SLUG_QUERY, {
+    variables: {
+      slug: slug,
+    },
+  });
+
+  if (!data) {
+    return <div className="flex-1"></div>;
+  }
+
   return (
     <div className="flex-1">
       <div className="bg-black flex justify-center">
@@ -18,7 +62,7 @@ export function Video() {
         >
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/ncBE6aD5JTk"
+            src={`https://www.youtube.com/embed/${data.lesson.videoId}`}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -30,31 +74,27 @@ export function Video() {
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start justify-center gap-16">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">
-              Aula 01 - Abertura do Ignite Lab
-            </h1>
+            <h1 className="text-2xl font-bold">{data.lesson.title}</h1>
 
             <p className="mt-4 text-gray-200 leading-relaxed">
-              Nessa aula vamos dar início ao projeto criando a estrutura base da
-              aplicação utilizando ReactJS, Vite e TailwindCSS. Vamos também
-              realizar o setup do nosso projeto no GraphCMS criando as entidades
-              da aplicação e integrando a API GraphQL gerada pela plataforma no
-              nosso front-end utilizando Apollo Client.
+              {data.lesson.description}
             </p>
 
             <div className="flex items-center gap-4 mt-6">
               <div className="w-16 h-16 relative border-2 border-blue-500 rounded-full overflow-hidden">
                 <Image
-                  src="https://github.com/XxWexX5.png"
+                  src={data.lesson.teacher.avatarURL}
                   alt="Avatar."
                   layout="fill"
                 />
               </div>
 
               <div className="leading-relaxed">
-                <strong className="font-bold text-2xl block">Wevison R.</strong>
+                <strong className="font-bold text-2xl block">
+                  {data.lesson.teacher.name}
+                </strong>
                 <span className="text-gray-200 text-sm block">
-                  Front-end Developer at AltoQi.
+                  {data.lesson.teacher.bio}
                 </span>
               </div>
             </div>

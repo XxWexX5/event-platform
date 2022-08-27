@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 
 import {
@@ -14,7 +15,16 @@ export function Video() {
         <div
           className="h-full w-full max-w-[1100px] max-h-[60vh] aspect-video
         "
-        ></div>
+        >
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/ncBE6aD5JTk"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
       </div>
 
       <div className="p-8 max-w-[1100px] mx-auto">

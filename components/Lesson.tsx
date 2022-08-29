@@ -6,7 +6,6 @@ import { isPast, format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
 import classNames from "classnames";
-
 interface LessonProps {
   title: string;
   slug: string;

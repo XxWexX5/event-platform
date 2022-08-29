@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 
-import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
 
 import { Header } from "../components/Header";
@@ -8,29 +7,12 @@ import { Lesson } from "../components/Lesson";
 import { Sidebar } from "../components/Sidebar";
 import { Video } from "../components/Video";
 
-const GET_LESSONS_QUERY = gql`
-  query {
-    lessons {
-      id
-      slug
-      title
-      teacher {
-        name
-        bio
-        avatarURL
-      }
-    }
-  }
-`;
-
 interface Lesson {
   id: string;
   title: string;
 }
 
 export default function Event() {
-  const { data } = useQuery<{ lessons: Lesson[] }>(GET_LESSONS_QUERY);
-
   const router = useRouter();
   const { slug } = router.query;
 

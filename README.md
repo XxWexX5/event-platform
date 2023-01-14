@@ -1,5 +1,5 @@
-## Project - Event Platform
-### By Wevison Ramalho
+# Project - Event Platform
+By Wevison Ramalho
 
 ![Background Project](https://i.ibb.co/0cWWQqy/background.jpg)
 
